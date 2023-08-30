@@ -4,18 +4,6 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Remove Background',
-      home: RemoveBackgroundScreen(),
-    );
-  }
-}
-
 class RemoveBackgroundScreen extends StatefulWidget {
   @override
   _RemoveBackgroundScreenState createState() => _RemoveBackgroundScreenState();

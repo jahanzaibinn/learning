@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:webtutorial/mobile/bgremover.dart';
+import 'package:webtutorial/mobile/call.dart';
 import 'package:webtutorial/utils/jitsi.dart';
 
 class MobileHost extends StatefulWidget {
@@ -112,7 +113,8 @@ class _MobileHostState extends State<MobileHost> {
                   ],
                 ),
               ),
-              RemoveBackgroundScreen()
+              RemoveBackgroundScreen(),
+              Call()
             ],
           ),
         ));
