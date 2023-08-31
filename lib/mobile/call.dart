@@ -9,9 +9,7 @@ class Call extends StatefulWidget {
 }
 
 class _CallState extends State<Call> {
-  final ApiVideoLiveStreamController _controller = ApiVideoLiveStreamController(
-      initialAudioConfig: AudioConfig(),
-      initialVideoConfig: VideoConfig.withDefaultBitrate());
+  late final ApiVideoLiveStreamController _controller ;
 
   @override
   void initState() {
@@ -21,6 +19,11 @@ class _CallState extends State<Call> {
   }
 
   initializer() async {
+    setState(() {
+      _controller =  ApiVideoLiveStreamController(
+          initialAudioConfig: AudioConfig(),
+          initialVideoConfig: VideoConfig.withDefaultBitrate());
+    });
     await _controller.initialize();
   }
 
