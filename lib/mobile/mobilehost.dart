@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:webtutorial/mobile/bgremover.dart';
 import 'package:webtutorial/mobile/call.dart';
@@ -72,18 +73,30 @@ class _MobileHostState extends State<MobileHost> {
           ),
           body: TabBarView(
             children: [
-              ListView.builder(
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text('Name'),
-                    subtitle: Text('Message'),
-                    leading: CircleAvatar(
-                      child: Image.network('https://protocoderspoint.com/wp-content/uploads/2019/10/mypic-300x300.jpg'),
-                    ),
-                    trailing: Text("${DateTime.now()}"),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('users').snapshots(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasError){
+                    return Text('Error');
+                  }
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return Text('Loading..');
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(snapshot.data!.docs[index]['name']),
+                        subtitle: Text(snapshot.data!.docs[index]['email']),
+                        leading: CircleAvatar(
+                          child: Image.network('https://protocoderspoint.com/wp-content/uploads/2019/10/mypic-300x300.jpg'),
+                        ),
+                        trailing: Text("${DateTime.now()}"),
+                      );
+                    },
                   );
-                },
-              ),
+              },),
+
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 25),
                 child: Column(

@@ -45,6 +45,7 @@ dependencies:
   http: ^1.1.0
   path_provider:
   apivideo_live_stream: ^1.1.2
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
