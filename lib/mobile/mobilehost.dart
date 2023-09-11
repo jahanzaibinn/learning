@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:webtutorial/mobile/bgremover.dart';
 import 'package:webtutorial/mobile/call.dart';
 import 'package:webtutorial/utils/jitsi.dart';
+import 'package:webtutorial/utils/routes_constant.dart';
 
 class MobileHost extends StatefulWidget {
   const MobileHost({super.key});
@@ -86,6 +88,9 @@ class _MobileHostState extends State<MobileHost> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       return ListTile(
+                        onTap: (){
+                          Get.toNamed(CHAT_SCREEN,arguments: {'receiverID': snapshot.data!.docs[index]['uid'],'receiverName': snapshot.data!.docs[index]['name']});
+                        },
                         title: Text(snapshot.data!.docs[index]['name']),
                         subtitle: Text(snapshot.data!.docs[index]['email']),
                         leading: CircleAvatar(

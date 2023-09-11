@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:webtutorial/mobile/auth/login_screen.dart';
 import 'package:webtutorial/mobile/auth/signup_screen.dart';
+import 'package:webtutorial/mobile/chat/chat_screen.dart';
 import 'package:webtutorial/mobile/mobilehost.dart';
 import 'package:webtutorial/mobile/splash_screen.dart';
 import 'package:webtutorial/responsive/responsive.dart';
@@ -32,6 +33,11 @@ class AppRoutes {
           isMobileLayout: MobileHost(),
           isWebLayout: WebHost(),
         ),
+        transition: Transition.fadeIn
+    ),
+    GetPage(
+        name: CHAT_SCREEN,
+        page: () => ChatScreen(),
         transition: Transition.fadeIn
     ),
   ];
