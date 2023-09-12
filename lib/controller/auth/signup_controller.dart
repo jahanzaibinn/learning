@@ -32,7 +32,9 @@ class SignUpController extends GetxController{
       FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
         'uid': userCredential.user!.uid,
         'name': nameController.text.trim(),
-        'email': emailController.text.trim()
+        'email': emailController.text.trim(),
+        'isOnline' : true,
+        'lastActive' : DateTime.now(),
       });
       Get.snackbar('Success', "${userCredential.additionalUserInfo?.authorizationCode}");
       Get.toNamed(BASE_SCREEN);

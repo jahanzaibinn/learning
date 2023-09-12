@@ -39,6 +39,21 @@ class _MobileHostState extends State<MobileHost> {
     jitsiMeetMethod.joinMeeting(roomName: meetingID.text,userName: userName.text);
   }
 
+  String formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    Duration difference = DateTime.now().difference(dateTime);
+
+    if (difference.inMinutes < 1) {
+      return 'Just now';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} min ago';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} hours ago';
+    } else {
+      return '${difference.inDays} days ago';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var random = Random();
@@ -76,7 +91,7 @@ class _MobileHostState extends State<MobileHost> {
           body: TabBarView(
             children: [
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('users').snapshots(),
+                stream: FirebaseFirestore.instance.collection('users').snapshots(includeMetadataChanges: true),
                 builder: (context, snapshot) {
                   if(snapshot.hasError){
                     return Text('Error');
@@ -89,14 +104,27 @@ class _MobileHostState extends State<MobileHost> {
                     itemBuilder: (context, index) {
                       return ListTile(
                         onTap: (){
-                          Get.toNamed(CHAT_SCREEN,arguments: {'receiverID': snapshot.data!.docs[index]['uid'],'receiverName': snapshot.data!.docs[index]['name']});
+                          Get.toNamed(CHAT_SCREEN,arguments: {'receiverID': snapshot.data!.docs[index]['uid'],'receiverName': snapshot.data!.docs[index]['name'], 'isOnline' : snapshot.data!.docs[index]['isOnline']});
                         },
                         title: Text(snapshot.data!.docs[index]['name']),
                         subtitle: Text(snapshot.data!.docs[index]['email']),
-                        leading: CircleAvatar(
-                          child: Image.network('https://protocoderspoint.com/wp-content/uploads/2019/10/mypic-300x300.jpg'),
+                        leading: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            CircleAvatar(
+                              radius : 30,
+                              backgroundImage: NetworkImage('https://protocoderspoint.com/wp-content/uploads/2019/10/mypic-300x300.jpg'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 5,right: 2),
+                              child: CircleAvatar(
+                                radius: 5,
+                                backgroundColor: snapshot.data!.docs[index]['isOnline'] ? Colors.green : Colors.red,
+                              ),
+                            ),
+                          ],
                         ),
-                        trailing: Text("${DateTime.now()}"),
+                        trailing: Text(formatTimestamp(snapshot.data!.docs[index]['lastActive'])),
                       );
                     },
                   );
