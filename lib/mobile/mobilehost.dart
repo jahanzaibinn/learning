@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:webtutorial/mobile/bgremover.dart';
@@ -91,7 +92,7 @@ class _MobileHostState extends State<MobileHost> {
           body: TabBarView(
             children: [
               StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('users').snapshots(includeMetadataChanges: true),
+                stream: FirebaseFirestore.instance.collection('users').where('uid' ,isNotEqualTo: FirebaseAuth.instance.currentUser!.uid ).snapshots(includeMetadataChanges: true),
                 builder: (context, snapshot) {
                   if(snapshot.hasError){
                     return Text('Error');
